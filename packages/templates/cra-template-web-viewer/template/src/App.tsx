@@ -37,6 +37,8 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import { Auth } from "./Auth";
 import { history } from "./history";
+import { IModelReadRpcInterface, IModelTileRpcInterface, DevToolsRpcInterface } from "@itwin/core-common";
+import { PresentationRpcInterface } from "@itwin/presentation-common";
 
 const App: React.FC = () => {
   const [iModelId, setIModelId] = useState(process.env.IMJS_IMODEL_ID);
@@ -148,6 +150,26 @@ const App: React.FC = () => {
       <Viewer
         iTwinId={iTwinId ?? ""}
         iModelId={iModelId ?? ""}
+        backendConfiguration={{
+          customBackends: [{
+            config:{
+              info:{
+                title:"imodeljs/visualization",
+                version: "v4"
+              },
+              uriPrefix: "https://qa-api.bentley.com",
+            },
+            rpcInterfaces:[
+
+              IModelReadRpcInterface,
+        
+              IModelTileRpcInterface,
+        
+              PresentationRpcInterface
+        
+            ]
+          }]
+        }}
         changeSetId={changesetId}
         authClient={authClient}
         viewCreatorOptions={viewCreatorOptions}
